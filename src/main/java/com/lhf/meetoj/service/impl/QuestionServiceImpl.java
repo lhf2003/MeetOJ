@@ -90,14 +90,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         String answer = questionQueryRequest.getAnswer();
         JudgeConfig judgeConfig = questionQueryRequest.getJudgeConfig();
         List<JudgeCase> judgeCase = questionQueryRequest.getJudgeCase();
-        Integer thumbNum = questionQueryRequest.getThumbNum();
-        Integer favourNum = questionQueryRequest.getFavourNum();
         Long userId = questionQueryRequest.getUserId();
         Date createTime = questionQueryRequest.getCreateTime();
         Date updateTime = questionQueryRequest.getUpdateTime();
-        Integer isDelete = questionQueryRequest.getIsDelete();
-        int current = questionQueryRequest.getCurrent();
-        int pageSize = questionQueryRequest.getPageSize();
         String sortField = questionQueryRequest.getSortField();
         String sortOrder = questionQueryRequest.getSortOrder();
 
@@ -109,6 +104,10 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
                 queryWrapper.like("tags", "\"" + tag + "\"");
             }
         }
+
+        queryWrapper.like(StringUtils.isNotBlank(answer), "answer", answer);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(judgeConfig), "judgeConfig", judgeConfig);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(judgeCase), "judgeCase", judgeCase);
         queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
@@ -130,8 +129,16 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         return questionVO;
     }
 
+    /**
+     * 普通用户的题目
+     * @date 2024/7/18  17:36
+     * @param questionPage
+     * @param request
+     * @return com.baomidou.mybatisplus.extension.plugins.pagination.Page<com.lhf.meetoj.model.vo.QuestionVO>
+     */
     @Override
     public Page<QuestionVO> getQuestionVOPage(Page<Question> questionPage, HttpServletRequest request) {
+        // 获取分页数据
         List<Question> questionList = questionPage.getRecords();
         Page<QuestionVO> questionVOPage = new Page<>(questionPage.getCurrent(), questionPage.getSize(), questionPage.getTotal());
         if (CollUtil.isEmpty(questionList)) {

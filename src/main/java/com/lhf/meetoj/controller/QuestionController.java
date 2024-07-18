@@ -10,10 +10,7 @@ import com.lhf.meetoj.common.ResultUtils;
 import com.lhf.meetoj.constant.UserConstant;
 import com.lhf.meetoj.exception.BusinessException;
 import com.lhf.meetoj.exception.ThrowUtils;
-import com.lhf.meetoj.model.dto.question.QuestionAddRequest;
-import com.lhf.meetoj.model.dto.question.QuestionEditRequest;
-import com.lhf.meetoj.model.dto.question.QuestionQueryRequest;
-import com.lhf.meetoj.model.dto.question.QuestionUpdateRequest;
+import com.lhf.meetoj.model.dto.question.*;
 import com.lhf.meetoj.model.entity.Question;
 import com.lhf.meetoj.model.entity.User;
 import com.lhf.meetoj.model.vo.QuestionVO;
@@ -29,7 +26,6 @@ import java.util.List;
 
 /**
  * 题目接口
- *
  */
 @RestController
 @RequestMapping("/question")
@@ -55,12 +51,23 @@ public class QuestionController {
         if (questionAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+
         Question question = new Question();
         BeanUtils.copyProperties(questionAddRequest, question);
         List<String> tags = questionAddRequest.getTags();
         if (tags != null) {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
+        JudgeConfig judgeConfig = questionAddRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            question.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+        List<JudgeCase> judgeCase = questionAddRequest.getJudgeCase();
+        if (judgeCase != null) {
+            question.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
+        }
+        // 验证
+        questionService.validQuestion(question, false);
         questionService.validQuestion(question, true);
 
         // 获取登录用户
@@ -86,7 +93,8 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteQuestion(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> deleteQuestion(@RequestBody DeleteRequest deleteRequest, HttpServletRequest
+            request) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -123,6 +131,14 @@ public class QuestionController {
         if (tags != null) {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
+        JudgeConfig judgeConfig = questionUpdateRequest.getJudgeConfig();
+        if (judgeConfig != null) {
+            question.setJudgeConfig(JSONUtil.toJsonStr(judgeConfig));
+        }
+        List<JudgeCase> judgeCase = questionUpdateRequest.getJudgeCase();
+        if (judgeCase != null) {
+            question.setJudgeCase(JSONUtil.toJsonStr(judgeCase));
+        }
         // 参数校验
         questionService.validQuestion(question, false);
         long id = questionUpdateRequest.getId();
@@ -134,7 +150,7 @@ public class QuestionController {
     }
 
     /**
-     * 根据 id 获取
+     * 根据 id 获取题目
      *
      * @param id
      * @return
@@ -168,15 +184,16 @@ public class QuestionController {
     }
 
     /**
-     * 分页获取列表（封装类）
+     * 分页获取列表（封装类），普通用户只能获得脱敏后的数据
      *
      * @param questionQueryRequest
      * @param request
      * @return
      */
     @PostMapping("/list/page/vo")
-    public BaseResponse<Page<QuestionVO>> listQuestionVOByPage(@RequestBody QuestionQueryRequest questionQueryRequest,
-            HttpServletRequest request) {
+    public BaseResponse<Page<QuestionVO>> listQuestionVOByPage(@RequestBody QuestionQueryRequest
+                                                                       questionQueryRequest,
+                                                               HttpServletRequest request) {
         long current = questionQueryRequest.getCurrent();
         long size = questionQueryRequest.getPageSize();
         // 限制爬虫
@@ -194,8 +211,9 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/my/list/page/vo")
-    public BaseResponse<Page<QuestionVO>> listMyQuestionVOByPage(@RequestBody QuestionQueryRequest questionQueryRequest,
-            HttpServletRequest request) {
+    public BaseResponse<Page<QuestionVO>> listMyQuestionVOByPage(@RequestBody QuestionQueryRequest
+                                                                         questionQueryRequest,
+                                                                 HttpServletRequest request) {
         if (questionQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -210,9 +228,6 @@ public class QuestionController {
         return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
     }
 
-    // endregion
-
-
     /**
      * 编辑（用户）
      *
@@ -221,16 +236,13 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/edit")
-    public BaseResponse<Boolean> editQuestion(@RequestBody QuestionEditRequest questionEditRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> editQuestion(@RequestBody QuestionEditRequest
+                                                      questionEditRequest, HttpServletRequest request) {
         if (questionEditRequest == null || questionEditRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         Question question = new Question();
         BeanUtils.copyProperties(questionEditRequest, question);
-//        List<String> tags = questionEditRequest.getTags();
-//        if (tags != null) {
-//            question.setTags(JSONUtil.toJsonStr(tags));
-//        }
         // 参数校验
         questionService.validQuestion(question, false);
         User loginUser = userService.getLoginUser(request);
