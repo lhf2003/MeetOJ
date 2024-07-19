@@ -28,7 +28,7 @@ public class QuestionSubmitQueryRequest extends PageRequest {
     /**
      * 语言
      */
-    private String lanague;
+    private String language;
 
 
     /**

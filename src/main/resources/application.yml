@@ -52,7 +52,7 @@ spring:
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8121
   servlet:
     context-path: /api
     # cookie 30 天过期
@@ -108,3 +108,7 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.lhf.meetoj.controller
+
+# 代码沙箱
+codesandbox:
+  type: example

@@ -7,7 +7,7 @@ public class QuestionSubmitAddRequest {
     /**
      * 语言
      */
-    private String lanague;
+    private String language;
 
     /**
      * 题目 id

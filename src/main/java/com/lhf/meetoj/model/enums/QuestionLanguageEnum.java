@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
  * @from <a href="https://lhf.icu">编程导航知识星球</a>
  */
 public enum QuestionLanguageEnum {
-    JAVA("Java", "Java"),
-    C("C", "C"),
+    JAVA("Java", "java"),
+    C("C", "c"),
     C_PLUS_PLUS("C++", "C++"),
     C_SHARP("C#", "C#"),
     JAVASCRIPT("JavaScript", "JavaScript"),

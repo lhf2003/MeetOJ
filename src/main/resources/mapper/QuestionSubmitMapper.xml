@@ -8,7 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="questionId" column="questionId" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
-            <result property="lanague" column="lanague" jdbcType="VARCHAR"/>
+            <result property="language" column="language" jdbcType="VARCHAR"/>
             <result property="code" column="code" jdbcType="VARCHAR"/>
             <result property="judgeInfo" column="judgeInfo" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
@@ -18,7 +18,7 @@
 
     <sql id="Base_Column_List">
         id,questionId,userId,
-        lanague,code,judgeInfo,
+        language,code,judgeInfo,
         status,createTime,updateTime
     </sql>
 </mapper>

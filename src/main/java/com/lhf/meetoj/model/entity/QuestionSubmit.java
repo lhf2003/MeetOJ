@@ -4,15 +4,19 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
  * 题目提交表
+ *
  * @TableName question_submit
  */
-@TableName(value ="question_submit")
+@TableName(value = "question_submit")
 @Data
 public class QuestionSubmit implements Serializable {
     /**
@@ -34,7 +38,7 @@ public class QuestionSubmit implements Serializable {
     /**
      * 语言
      */
-    private String lanague;
+    private String language;
 
     /**
      * 用户代码
@@ -60,6 +64,8 @@ public class QuestionSubmit implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    private Integer isDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

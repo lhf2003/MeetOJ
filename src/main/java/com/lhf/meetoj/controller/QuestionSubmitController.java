@@ -13,6 +13,7 @@ import com.lhf.meetoj.model.dto.question.QuestionSubmitQueryRequest;
 import com.lhf.meetoj.model.entity.Question;
 import com.lhf.meetoj.model.entity.QuestionSubmit;
 import com.lhf.meetoj.model.entity.User;
+import com.lhf.meetoj.model.enums.QuestionLanguageEnum;
 import com.lhf.meetoj.service.QuestionSubmitService;
 import com.lhf.meetoj.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,7 @@ public class QuestionSubmitController {
         }
         // 登录才能操作
         final User loginUser = userService.getLoginUser(request);
+        questionSubmitAddRequest.setLanguage(QuestionLanguageEnum.JAVA.getValue());
         Long result = questionSubmitService.doQuestionSubmit(questionSubmitAddRequest, loginUser);
         return ResultUtils.success(result);
     }
