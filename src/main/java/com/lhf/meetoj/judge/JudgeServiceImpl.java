@@ -77,7 +77,7 @@ public class JudgeServiceImpl implements JudgeService {
         JudgeContext judgeContext = new JudgeContext();
         judgeContext.setJudgeInfo(codeResponse.getJudgeInfo());
         judgeContext.setJudgeCaseList(judgeCaseList);
-        judgeContext.setOutputList(codeResponse.getOutput());
+        judgeContext.setOutputList(codeResponse.getOutputList());
         judgeContext.setInputList(expectInputList);
         judgeContext.setQuestion(question);
         judgeContext.setQuestionSubmit(questionSubmit);

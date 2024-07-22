@@ -15,7 +15,7 @@ public class ExampleCodeSandBox implements CodeSandBox {
         judgeInfo.setTime(1000L);
         judgeInfo.setMemory(1000L);
         codeResponse.setJudgeInfo(judgeInfo);
-        codeResponse.setOutput(excuteCodeRequest.getInput());
+        codeResponse.setOutputList(excuteCodeRequest.getInput());
         return codeResponse;
     }
 }

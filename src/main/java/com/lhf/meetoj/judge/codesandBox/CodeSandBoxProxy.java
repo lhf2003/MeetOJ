@@ -12,9 +12,6 @@ public class CodeSandBoxProxy implements CodeSandBox {
 
     @Override
     public ExcuteCodeResponse excute(ExcuteCodeRequest excuteCodeRequest) {
-        log.info("excute code request: {}", excuteCodeRequest);
-        ExcuteCodeResponse codeResponse = codeSandBox.excute(excuteCodeRequest);
-        log.info("excute code response: {}", codeResponse);
-        return codeResponse;
+        return codeSandBox.excute(excuteCodeRequest);
     }
 }
